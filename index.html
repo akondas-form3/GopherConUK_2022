@@ -41,27 +41,28 @@
 						<p>How to configure linters</p>
 						<ul>
 							<li>What the good linter configuration should look like;</li>
-							<li>Linting code vs enforcing code style?</li>
+							<li>Pain Theory, Part I;</li>
 						</ul>
 
 						<p>How to use linters and...</p>
 						<ul>
 							<li>How to incorporate your linter setup into the existing codebase and how to use one in a new project;</li>
-							<li>How to use separate stages of linter hardness within a codebase</li>
+							<li>How to use separate stages of linter hardness within a codebase (Pain Theory, Part II)</li>
 						</ul>
 
 						<p>...how not to lose your mind</p>
 						<ul>
 							<li>Trade-offs you have to do with your linter setup and how to manage them;</li>
-							<li>Quirks and issues with golangci-lint</li>
+							<li>Custom linters?</li>
 						</ul>
 
 						<p>How Form3 runs linters</p>
 						<ul>
-							<li>How we do linting at Form3</li>
+							<li>How do we do linting at Form3</li>
 						</ul>
 					</aside>
 				</section>
+
 				<section>
 					<h2 style="height:20%">
 						Whoami
@@ -77,60 +78,456 @@
 					</div>
 					<div style="clear:both"></div>
 				</section>
+
+				<!--
+					How to start with linters
+
+					Why Don't You Get a Linter
+				-->
+
 				<section>
 					<section>
-					<h2>
-						Why Don't You Get a Linter
-					</h2>
-					<aside class="notes">
-						<p>
-						My friend's got a codebase, man, he hates that thing.<br>
-						He tells me everyday.<br>
-						He says "Man, I really <br>gotta lint this thing
-						in the best kind of way".<br>
-						</p>
-						<p>
+						<h2>
+							Why Don't You Get a Linter
+						</h2>
+						<aside class="notes">
+							<p style="background:gray; color:white;">
+							My friend's got a codebase, man, he hates that thing<br>
+							He tells me everyday<br>
+							He says "Man, I really gotta lint this thing<br>
+							in the best kind of way"<br>
+							</p>
+							<p>
 							We will never know if a conversation like this has ever happened,
 							but for the sake of our discussion, let's assume it did.
-						</p>
-						<p>
+							</p>
+							<p>
 							How can we action on it?
-						</p>
-					</aside>
+							</p>
+						</aside>
 					</section>
-					<section>
+					<section data-transition="slide-in fade-out">
 						<h3>
 							...But what is a Linter?
 						</h3>
 					</section>
-					<section>
+					<section data-transition="fade-in slide-out">
 						<p>linter [<b>lin</b>-ter]</p>
 						<aside class="notes">
-The word itself, although unrelated to tech, can be first found in A New Latin Dictionary from 1879.
-In our case, the term comes from a tool developed by Stephen C. Johnson in 1978, called "lint".
-<br><br>
-"Lint" was used to analyse C source code and to help with figuring out compiler optimisations.
-Over time, similar tools started to add more types of checks and verification.
-<br><br>
-Nowadays, finding a project without any linter setup is not as hard as it should be.
+							The word itself, although unrelated to tech, can be first found in A New Latin Dictionary from 1879.
+							In our case, the term comes from a tool developed by Stephen C. Johnson in 1978, called "lint".
+							<br><br>
+							"Lint" was used to analyse C source code and to help with figuring out compiler optimisations.
+							Over time, similar tools started to add more types of checks and verification.
+							<br><br>
+							Nowadays, finding a project without any linter setup is not as hard as it should be.
+						</aside>
+					</section>
+					<section data-transition="slide-in fade-out">
+						<h3>
+							Do I need it tho?
+						</h3>	
+					</section>
+					<section data-transition="fade-in slide-out" data-transition-speed="fast">
+						<h1 style="font-size:650%;">
+							YES
+						</h1>
+					</section>
+					<section data-transition="slide">
+						<img src="./assets/1_ryan_reynolds_but_why.gif" width="1280" height="650" style="display: block; margin-left: auto; margin-right: auto">
+						</img>
+					</section>
+					<section data-transition="slide">
+						<p>
+						Imagine flying a plane, where each pilot has their own way of flying.
+						</p>
+						<aside class="notes">
+							When we start thinking about linters as a helping tool (and we configure it this way),
+							it turns out, that:
+							<ul>
+								<li>our productivity goes upwards (as we don't have to worry about how the code should look)</li>
+								<li>the longetivity of the code extends as well</li>
+								<li>you get more insights about how your code will perform in the future</li>
+							</ul>
 						</aside>
 					</section>
 				</section>
+
+				<!--
+					How to configure linters
+
+					Linter Avenue
+				-->
+
 				<section>
-					<h2>
-						I Write Linters<br>Not Tragedies
-					</h2>
+					<section>
+						<h2>
+							Linter Avenue
+						</h2>
+						<aside class="notes">
+							<p style="background:gray; color:white;">
+							When I get to Linter avenue<br>
+							Meet me by the end of your terminal view<br>
+							We can talk things over a little time<br>
+							Promise me you won't step out of line<br>
+							</p>
+							<p>
+							Not trying to assume anything here, but chances are, if you're writing Go AND you have linters,
+							you are using native <i>GolangCi-Lint</i> setup for your linting.
+							</p>
+							<p>
+							How you can tailor it to your own liking?
+							</p>
+						</aside>
+					</section>
+					<section data-transition="slide">
+						<h4>The Default</h4>
+						<aside class="notes">
+							In most of the cases, the default setup makes the most sense - but let's divide them into groups:
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<ul>
+							<li>
+								Quality
+							</li>
+						</ul>
+						<aside class="notes">
+							<ul>
+								<li>
+									Quality - linters, that checks if the code is up to a certain standard
+								</li>
+							</ul>
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<ul>
+							<li>
+								Quality
+							</li>
+							<li>
+								Security
+							</li>
+						</ul>
+						<aside class="notes">
+							<ul>
+								<li>
+									Quality - linters, that checks if the code is up to a certain standard
+								</li>
+								<li>
+									Security - linters, that checks if the code doesn't contain any security flaws
+								</li>
+							</ul>
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<ul>
+							<li>
+								Quality
+							</li>
+							<li>
+								Security
+							</li>
+							<li>
+								Readability
+							</li>
+						</ul>
+						<aside class="notes">
+							<ul>
+								<li>
+									Quality - linters, that checks if the code is up to a certain standard
+								</li>
+								<li>
+									Security - linters, that checks if the code doesn't contain any security flaws
+								</li>
+								<li>
+									Readability - linters, that enforces style changes for the code
+								</li>
+							</ul>
+						</aside>
+					</section>
+					<section data-transition="slide">
+						<h3>
+							How to work them out?
+						</h3>
+					</section>
+					<section data-transition="slide">
+						<img src="./assets/2_new_amsterdam.gif" width="1280" height="650" style="display: block; margin-left: auto; margin-right: auto">
+						</img>
+						<aside class="notes">
+							<p>
+							I'm a big advocate of actually knowing what you use rather than using things straight out of the box.
+							</p>
+							<p>
+							In my opinion, you should aim for maximum security, the best quality without compromising readability.
+							That's how we are reaching the...
+							</p>
+						</aside>
+					</section>
+					<section data-transition="slide">
+						<h1>
+							The Maximum Pain Theory
+						</h1>
+						<aside class="notes">
+							<p>
+							Let's assume, you are starting the new linter implementation in your team - how to evaluate how far can you push them?
+							</p>
+							<p>
+							Introducing - <b>The Maximum Pain Theory</b>
+							</p>
+							<p>
+							What it is - basically, in order to make the linters work, you, as the <b>Linter Master</b>, are introducing
+							the max pain setup - it doesn't mean that you actually enable all the linters that are available, but you should do 
+							at least the minimum of research and tailor the linters to your project.
+							</p>
+							<p>
+							Once you'll decide what goes into your setup, you just introduce it to the codebase and see what is the maximum pain level
+							your team can suffer. Sounds harsh, I know, but then you can dial it down as you go to find a nice balance between
+							productivity boost and mental damage.
+							</p>
+							<p>
+							The setup should go from max pain rather than inducing more pain as we go - it's easier to dial it down,
+							rather than bump it up.
+							</p>
+						</aside>
+					</section>
 				</section>
+
+				<!--
+					How to use linters
+
+					Lint 2
+				-->
+
 				<section>
-					<h2>
-						Lint Me Baby One More Time
-					</h2>
+					<section>
+						<h2>
+							Lint 2
+						</h2>
+						<aside class="notes">
+							<p style="background:gray; color:white;">
+							When my code is well linted<br>
+							And I'm pins and I'm needles<br>
+							Well, I lie and I'm easy<br>
+							All of the time but I'm never sure why I need you<br>
+							Pleased to meet you
+							</p>
+							<p>
+							Ok, so we've introduced new linter settings, a tad more than the max pain threshold for our team,
+							we are now responsible for all linter outputs and helping fixing them.
+							</p>
+							<p>
+							How to implement linters in new projects? What about the old ones? 
+							And, if introducing that across the team,	how we can make the introduction a bit smoother?
+							</p>
+						</aside>
+					</section>
+					<section data-transition="slide">
+						<h2>
+							Getting linters to work with your codebase
+						</h2>
+						<aside class="notes">
+							<p>
+							You can tackle the issue two-fold: when we start a new project or when we get into existing codebase
+							</p>
+						</aside>
+					</section>
+					<section data-transition="slide" data-auto-animate>
+						<h2>
+							New Codebase
+						</h2>
+						<aside class="notes">
+							<p>
+							When setting up a new project <b>WITH</b> a new linter setup, I do recommend being as thorough 
+							as you can possibly be with your setup.
+							</p>
+							<p>
+							I'll be following a setup of <b>GolangCi-Lint</b> as it's the most used linter aggregator.
+							The principles we'll follow here can be used with any other linter setup.
+							</p>
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<h2>
+							New Codebase
+						</h2>
+						<pre>
+							<code data-trim data-noescape data-line-numbers="1-4|5-7|8-11|12-16">
+								run:
+									tests: true
+									skip-dirs:
+										- some/dir/to/be/skipped
+								output:
+  								print-issues-lines: true
+ 							  	print-linter-name: true
+								issues:
+									fix: true
+								linters:
+									- all_the_linters_you_will_use
+								linters-settings:
+									some_linter:
+										linter_setup: true
+							</code>
+						</pre>
+						<aside class="notes">
+							<p>
+								I do always recommend writing your own <b>.yaml</b> file in order to have a full control over your linters
+								and to eliminate the guesswork. It's also way easier to maintain in the longer run.
+							</p>
+							<p>
+								I've divided our file into few smaller chunks which I recommend you set up when introducing the linters:
+							</p>
+							<ul>
+								<li>
+									<b>run</b> contains all the things that you'd like GolangCi-Lint to actually know - such as,
+									should it run the linters over tests or if there are any directories to skip.
+								</li>
+								<li>
+									<b>output</b> will contain what do you need to see from GolangCi-Lint when it prints to your output.
+								</li>
+								<li>
+									<b>issues</b> is the heart and bones of our setup, it will allow for the most important instructions for GolangCi-Lint.
+								</li>
+								<li>
+									As you might've predicted, <b>linters</b> and <b>linters-settings</b> will allow us to choose which linters we are using and how.
+								</li>
+							</ul>
+						</aside>
+					</section>
+					<section data-transition="slide" data-auto-animate>
+						<h2>
+							Pre-Existing Codebase
+						</h2>
+						<aside class="notes">
+							<p>
+							When it comes to the pre-existing codebases, I recommend only one option - get the linters not to interfere with the old code.
+							We all have tech debt and we all have the mythical <b>future sprint</b> to work on it.
+					</p>
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<h2>
+							Pre-Existing Codebase
+						</h2>
+						<pre>
+							<code data-trim data-noescape data-line-numbers="1-3">
+								issues:
+									new-from-rev: ""
+									new: true
+							</code>
+						</pre>
+						<aside class="notes">
+							<p>
+							Compared to the last example, there's only one (or two) significant change that we need to add to our linter setup
+							</p>
+							<p>
+							<b>new-from-rew</b> checks from which Git revision we should run the linters, and <b>new</b> is a magical thing
+							that checks if we're actually linting the new code. What it does in the background is ye olde <b>git diff</b>
+							and it literally checks your code for changes, line by line.
+							</p>
+						</aside>
+					</section>
+					<section data-transition="slide" data-auto-animate>
+						<h2>
+							Pain Theory, Part II
+						</h2>
+						<aside class="notes">
+							<p>
+							Now we know about how to introduce linters in any setup, now let's talk about your team's morale.
+							</p>
+							<p>
+							Following our pre-established pain theory, the way how we've run the linters upscale process in our team
+							was done over a week or two.
+							</p>
+							<p>
+							Within the team we've all agreed that we have a deadline on testing the linters and we've introduced it
+							in only one, pre-existing codebase. The agreement was that we've communicated literally daily on every standup
+							and we were trimming the fat <b>or</b> hardening the thing even more.
+							</p>
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<h2>
+							Pain Theory, Part II
+						</h2>
+						<h4>
+							Spliting Up The Pain
+						</h4>
+						<aside class="notes">
+							<p>
+							For the transition period we had three levels of linters <i>(which might have be a massive overkill)</i> 
+							and each member of the team was able to slowly incorporate the linters into their workflow.
+							</p>
+							<p>
+							By the end of the transition period, we all have been running the <b>full</b> setup, both locally and 
+							in the CI/CD pipeline.
+							</p>
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<h2>
+							Pain Theory, Part II
+						</h2>
+						<h4>
+							Spliting Up The Pain
+						</h4>
+						<pre>
+
+						</pre>
+						
+					</section>
 				</section>
+
+				<!--
+					...how not to lose your mind
+
+					Trade-offs you have to do with your linter setup and how to manage them
+					Custom linters?
+				-->
+
 				<section>
-					<h2>
-						Love Is a Linting Game
-					</h2>
+					<section>
+						<h2>
+							Don't Lint Stuff In Anger
+						</h2>
+						<aside class="notes">
+							<p style="background:gray; color:white;">
+							And so linters can wait<br>
+							They knows it's too late<br>
+							As my code is slipping by<br>
+							The quality fades away<br> <!-- this might need to be changed -->
+							But don't lint stuff in anger<br>
+							I heard you say<br>
+							</p>
+							<p>
+							Coming from experience, introducing linters is always a <b>slightly</b> difficult question to propagate within a team,
+							or even worst - the whole division.
+							</p>
+							<p>
+							I don't know your whole CI/CD pipeline, so I can only tell you what to look for and how to circumvent some of the issues
+							and errors you might have with your linter config.
+							</p>
+							<p>
+							And as if all of the newly introduced linters wouldn't be enough, we'll touch on how to write your own one,
+							with your own devides of fun!
+							</p>
+						</aside>
+					</section>
+					<section>
+
+					</section>
+					<section>
+						<h2>
+							Trade-offs
+						</h2>
+						<aside class="notes">
+							<p>
+
+							</p>
+						</aside>
+					</section>
 				</section>
+
 				<section>
 					<h2>
 						All The Lint Things
